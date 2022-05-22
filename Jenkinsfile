@@ -1,15 +1,21 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.4-openjdk-11-slim'
-        }
+    agent any
     }
-    stages{
-        stage('build'){
-            steps{
-                sh 'mvn --version'
+    stages {
+        stage('Build') {
+            steps {
+                sh './gradlew assemble'
             }
         }
-
+        stage('Test') {
+            steps {
+                sh './gradlew test'
+            }
+        }
+        stage('Build Docker image') {
+            steps {
+                sh './gradlew docker'
+            }
+        }
     }
 }
